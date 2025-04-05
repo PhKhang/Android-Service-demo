@@ -131,17 +131,17 @@ public class GPSService extends Service {
             Log.e("<<MyGpsService>>", "Location updates requested");
 
             // Initial broadcast of last known location
-            Location location = getLastKnownLocation();
-            if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                Intent myFilteredResponse = new Intent(GPS_FILTER);
-                myFilteredResponse.putExtra("latitude", latitude);
-                myFilteredResponse.putExtra("longitude", longitude);
-                myFilteredResponse.putExtra("provider", location.getProvider());
-                Log.e(">>GPS_Service<<", "Initial: Lat:" + latitude + " lon:" + longitude);
-                sendBroadcast(myFilteredResponse);
-            }
+//            Location location = getLastKnownLocation();
+//            if (location != null) {
+//                double latitude = location.getLatitude();
+//                double longitude = location.getLongitude();
+//                Intent myFilteredResponse = new Intent(GPS_FILTER);
+//                myFilteredResponse.putExtra("latitude", latitude);
+//                myFilteredResponse.putExtra("longitude", longitude);
+//                myFilteredResponse.putExtra("provider", location.getProvider());
+//                Log.e(">>GPS_Service<<", "Initial: Lat:" + latitude + " lon:" + longitude);
+//                sendBroadcast(myFilteredResponse);
+//            }
 
             Looper.loop();
         } catch (Exception e) {
