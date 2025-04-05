@@ -5,12 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Intent intentCallService4, intentCallService5, intentCallService6;
     BroadcastReceiver receiver;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentFilter filter5 = new IntentFilter("com.example.service.action.GOSERVICE5");
         IntentFilter filter6 = new IntentFilter("com.example.service.action.GPSFIX");
         receiver = new MyEmbeddedBroadcastReceiver();
-        registerReceiver(receiver, filter5);
-        registerReceiver(receiver, filter6);
+
+        registerReceiver(receiver, filter5, RECEIVER_EXPORTED);
+        registerReceiver(receiver, filter6, RECEIVER_EXPORTED);
     }// onCreate
 
     @Override
