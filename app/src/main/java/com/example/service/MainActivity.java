@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -52,6 +54,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }// onCreate
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("<<MyGpsService>>", "A Permission denied");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnStart4) {
             Log.e("MAIN", "onClick:starting service4");
@@ -77,19 +92,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public class MyEmbeddedBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("MAIN >>", "ACTION: "+intent.getAction());
+            Log.e("MAIN >>", "ACTION: " + intent.getAction());
             if (intent.getAction().equals("com.example.service.action.GOSERVICE5")) {
                 String service5Data = intent.getStringExtra("MyService5DataItem");
-                Log.e("MAIN >>", "Data received from Service5: "+service5Data);
-                txtMsg.append("\nService5Data: > "+service5Data);
+                Log.e("MAIN >>", "Data received from Service5: " + service5Data);
+                txtMsg.append("\nService5Data: > " + service5Data);
             } else if (intent.getAction().equals("com.example.service.action.GPSFIX")) {
                 double latitude = intent.getDoubleExtra("latitude", -1);
                 double longitude = intent.getDoubleExtra("longitude", -1);
                 String provider = intent.getStringExtra("provider");
-                String service6Data = provider + "lat: "+Double.toString(latitude)
-                        + "lon: "+Double.toString(longitude);
-                Log.e("MAIN >>", "Data received from Service6:"+service6Data);
-                txtMsg.append("\nService6Data: > "+service6Data);
+                String service6Data = provider + "lat: " + Double.toString(latitude)
+                        + "lon: " + Double.toString(longitude);
+                Log.e("MAIN >>", "Data received from Service6:" + service6Data);
+                txtMsg.append("\nService6Data: > " + service6Data);
             }
         }//onReceive
     }// MyEmbeddedBroadcastReceiver
